@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -49,7 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:24.0.2'
     implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.4'
 
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
     api 'com.google.guava:guava:28.2-jre'
 }
-
-apply plugin: 'com.google.gms.google-services'

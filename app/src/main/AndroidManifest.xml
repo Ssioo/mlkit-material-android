@@ -22,7 +22,7 @@
         android:value="@integer/google_play_services_version"/>
 
     <activity
-        android:name=".EntryChoiceActivity"
+        android:name=".MainActivity"
         android:exported="true"
         android:screenOrientation="portrait">
       <intent-filter>
@@ -32,67 +32,9 @@
     </activity>
 
     <activity
-        android:name=".java.MainActivity"
+        android:name=".StaticObjectDetectionActivity"
         android:exported="false"
         android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".java.LiveObjectDetectionActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".java.LiveBarcodeScanningActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".java.StaticObjectDetectionActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".java.settings.SettingsActivity"
-        android:exported="false"
-        android:label="@string/settings_title"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.Light">
-    </activity>
-
-    <activity
-        android:name=".kotlin.MainActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".kotlin.LiveObjectDetectionActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".kotlin.LiveBarcodeScanningActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".kotlin.StaticObjectDetectionActivity"
-        android:exported="false"
-        android:screenOrientation="portrait">
-    </activity>
-
-    <activity
-        android:name=".kotlin.settings.SettingsActivity"
-        android:exported="false"
-        android:label="@string/settings_title"
-        android:screenOrientation="portrait"
-        android:theme="@style/Theme.AppCompat.Light">
     </activity>
 
   </application>
