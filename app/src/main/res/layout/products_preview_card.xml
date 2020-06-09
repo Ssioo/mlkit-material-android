@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="@dimen/preview_card_width"
     android:layout_height="@dimen/preview_card_height"
@@ -18,6 +18,7 @@
         android:layout_width="@dimen/preview_card_image_size"
         android:layout_height="@dimen/preview_card_image_size"
         android:layout_margin="@dimen/preview_card_image_margin"
+        tools:src="@drawable/logo_google_cloud"
         android:contentDescription="@null"/>
 
     <LinearLayout
@@ -31,6 +32,7 @@
           android:layout_height="wrap_content"
           android:paddingTop="@dimen/preview_card_title_padding_top"
           android:fontFamily="sans-serif-medium"
+          tools:text="Title"
           android:maxLines="2"
           android:textColor="@color/black"
           android:textSize="@dimen/preview_card_title_text_size"/>
@@ -39,6 +41,7 @@
           android:id="@+id/card_subtitle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          tools:text="subTitle"
           android:paddingTop="@dimen/preview_card_subtitle_padding_top"
           android:fontFamily="sans-serif"
           android:maxLines="2"

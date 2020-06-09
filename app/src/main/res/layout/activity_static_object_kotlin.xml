@@ -1,97 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <include
-      layout="@layout/top_action_bar_in_static_image"
+  <data>
+
+  </data>
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
-      android:layout_height="@dimen/top_action_bar_height"
-      android:layout_gravity="top"/>
+      android:layout_height="match_parent">
 
-  <ImageView
-      android:id="@+id/input_image_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="@dimen/top_action_bar_height"
-      android:layout_marginBottom="@dimen/preview_card_carousel_height"
-      android:paddingStart="@dimen/static_image_view_padding_horizontal"
-      android:paddingEnd="@dimen/static_image_view_padding_horizontal"
-      android:contentDescription="@null"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_action_bar_height"
+        android:paddingStart="@dimen/top_action_bar_padding_horizontal"
+        android:paddingEnd="@dimen/top_action_bar_padding_horizontal"
+        android:background="@drawable/top_action_bar_scrim">
 
-  <FrameLayout
-      android:id="@+id/dot_view_container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="@dimen/top_action_bar_height"
-      android:layout_marginBottom="@dimen/preview_card_carousel_height"
-      android:background="@color/transparent"/>
+      <ImageView
+          android:id="@+id/close_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="start"
+          android:padding="@dimen/top_action_button_padding"
+          android:contentDescription="@string/cd_close_button"
+          app:srcCompat="@drawable/ic_close_vd_white_24"/>
 
-  <com.google.android.material.chip.Chip
-      android:id="@+id/bottom_prompt_chip"
-      style="@style/Widget.MaterialComponents.Chip.Entry"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/preview_card_carousel_height"
-      android:layout_gravity="bottom|center_horizontal"
-      android:checkable="false"
-      android:clickable="false"
-      android:fontFamily="sans-serif"
-      android:textColor="@color/white"
-      android:textSize="@dimen/bottom_prompt_chip_text_size"
-      android:visibility="gone"
-      app:chipCornerRadius="@dimen/bottom_prompt_chip_corner_radius"
-      app:chipSurfaceColor="@color/dark"
-      app:closeIconVisible="false"/>
+      <ImageView
+          android:id="@+id/photo_library_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:padding="@dimen/top_action_button_padding"
+          android:contentDescription="@string/cd_photo_library_button"
+          app:srcCompat="@drawable/ic_photo_library_vd_white_24"/>
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/card_recycler_view"
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/preview_card_carousel_height"
-      android:layout_gravity="bottom"
-      android:paddingBottom="@dimen/preview_card_carousel_padding_bottom"
-      android:paddingTop="@dimen/preview_card_carousel_padding_top"/>
+    </RelativeLayout>
 
-  <FrameLayout
-      android:id="@+id/loading_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@color/dark"
-      android:visibility="gone">
+    <ImageView
+        android:id="@+id/input_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_action_bar_height"
+        android:layout_marginBottom="@dimen/preview_card_carousel_height"
+        android:paddingStart="@dimen/static_image_view_padding_horizontal"
+        android:paddingEnd="@dimen/static_image_view_padding_horizontal"
+        android:contentDescription="@null" />
 
-    <ProgressBar
-        android:layout_width="@dimen/search_progress_bar_size"
-        android:layout_height="@dimen/search_progress_bar_size"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/white"
-        android:indeterminateTintMode="src_in"/>
+    <FrameLayout
+        android:id="@+id/dot_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_action_bar_height"
+        android:layout_marginBottom="@dimen/preview_card_carousel_height"
+        android:background="@color/transparent" />
 
-    <TextView
+    <com.google.android.material.chip.Chip
+        android:id="@+id/bottom_prompt_chip"
+        style="@style/Widget.MaterialComponents.Chip.Entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/static_image_loading_view_text_margin_bottom"
+        android:layout_marginBottom="@dimen/preview_card_carousel_height"
         android:layout_gravity="bottom|center_horizontal"
-        android:text="@string/prompt_searching"
+        android:checkable="false"
+        android:clickable="false"
+        android:fontFamily="sans-serif"
         android:textColor="@color/white"
-        android:textSize="@dimen/static_image_loading_view_text_size"/>
+        android:textSize="@dimen/bottom_prompt_chip_text_size"
+        android:visibility="gone"
+        app:chipCornerRadius="@dimen/bottom_prompt_chip_corner_radius"
+        app:chipSurfaceColor="@color/dark"
+        app:closeIconVisible="false" />
 
-  </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/card_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/preview_card_carousel_height"
+        android:layout_gravity="bottom"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/products_preview_card"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/preview_card_carousel_padding_bottom"
+        android:paddingTop="@dimen/preview_card_carousel_padding_top" />
 
-  <com.google.firebase.ml.md.productsearch.BottomSheetScrimView
-      android:id="@+id/bottom_sheet_scrim_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:visibility="gone"/>
+    <FrameLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark"
+        android:visibility="gone">
 
-  <include
-      android:id="@+id/bottom_sheet"
-      layout="@layout/product_bottom_sheet"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:behavior_hideable="true"
-      app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+      <ProgressBar
+          android:layout_width="@dimen/search_progress_bar_size"
+          android:layout_height="@dimen/search_progress_bar_size"
+          android:layout_gravity="center"
+          android:indeterminate="true"
+          android:indeterminateTint="@color/white"
+          android:indeterminateTintMode="src_in" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="@dimen/static_image_loading_view_text_margin_bottom"
+          android:layout_gravity="bottom|center_horizontal"
+          android:text="@string/prompt_searching"
+          android:textColor="@color/white"
+          android:textSize="@dimen/static_image_loading_view_text_size" />
+
+    </FrameLayout>
+
+    <!--<RelativeLayout
+        android:id="@+id/bottom_sheet"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_action_bar_height"
+        android:paddingStart="@dimen/top_action_bar_padding_horizontal"
+        android:paddingEnd="@dimen/top_action_bar_padding_horizontal"
+        android:background="@drawable/top_action_bar_scrim">
+
+      <ImageView
+          android:id="@+id/close_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="start"
+          android:padding="@dimen/top_action_button_padding"
+          android:contentDescription="@string/cd_close_button"
+          app:srcCompat="@drawable/ic_close_vd_white_24"/>
+
+      <ImageView
+          android:id="@+id/photo_library_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:padding="@dimen/top_action_button_padding"
+          android:contentDescription="@string/cd_photo_library_button"
+          app:srcCompat="@drawable/ic_photo_library_vd_white_24"/>
+
+    </RelativeLayout>-->
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

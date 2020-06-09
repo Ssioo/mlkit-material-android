@@ -16,6 +16,8 @@
 
 package com.google.firebase.ml.md.productsearch
 
+import android.content.res.Resources
+import android.graphics.Rect
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.ml.md.R
+import com.google.firebase.ml.md.models.Product
 
 /** Powers the bottom card carousel for displaying the preview of product search result.  */
 class PreviewCardAdapter(
@@ -45,6 +48,12 @@ class PreviewCardAdapter(
     }
 
     override fun getItemCount(): Int = searchedObjectList.size
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.addItemDecoration(CardItemDecoration(recyclerView.resources))
+        //LinearSnapHelper().attachToRecyclerView(recyclerView)
+    }
 
     class CardViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -74,4 +83,20 @@ class PreviewCardAdapter(
             }
         }
     }
+
+    private class CardItemDecoration constructor(resources: Resources) : RecyclerView.ItemDecoration() {
+
+        private val cardSpacing: Int = resources.getDimensionPixelOffset(R.dimen.preview_card_spacing)
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val adapterPosition = parent.getChildAdapterPosition(view)
+            outRect.left = if (adapterPosition == 0) cardSpacing * 2 else cardSpacing
+            val adapter = parent.adapter ?: return
+            if (adapterPosition == adapter.itemCount - 1) {
+                outRect.right = cardSpacing
+            }
+        }
+    }
+
+
 }

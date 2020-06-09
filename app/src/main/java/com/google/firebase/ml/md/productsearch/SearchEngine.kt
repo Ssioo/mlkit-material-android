@@ -22,6 +22,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.ml.md.models.Product
 import com.google.firebase.ml.md.objectdetection.DetectedObject
 import java.util.*
 import java.util.concurrent.Callable
