@@ -18,13 +18,13 @@ package com.google.firebase.ml.md.productsearch
 
 import android.content.res.Resources
 import android.graphics.Rect
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.ml.md.R
 import com.google.firebase.ml.md.models.Product
 
@@ -34,12 +34,8 @@ class PreviewCardAdapter(
     private val previewCordClickedListener: (searchedObject: SearchedObject) -> Any
 ) : RecyclerView.Adapter<PreviewCardAdapter.CardViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        return CardViewHolder(
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.products_preview_card, parent, false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder =
+            CardViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.products_preview_card, parent, false))
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val searchedObject = searchedObjectList[position]
@@ -60,7 +56,6 @@ class PreviewCardAdapter(
         private val imageView: ImageView = itemView.findViewById(R.id.card_image)
         private val titleView: TextView = itemView.findViewById(R.id.card_title)
         private val subtitleView: TextView = itemView.findViewById(R.id.card_subtitle)
-        private val imageSize: Int = itemView.resources.getDimensionPixelOffset(R.dimen.preview_card_image_size)
 
         internal fun bindProducts(products: List<Product>) {
             if (products.isEmpty()) {
@@ -70,12 +65,11 @@ class PreviewCardAdapter(
             } else {
                 val topProduct = products[0]
                 imageView.visibility = View.VISIBLE
-                imageView.setImageDrawable(null)
-                if (!TextUtils.isEmpty(topProduct.imageUrl)) {
-                    ImageDownloadTask(imageView, imageSize).execute(topProduct.imageUrl)
-                } else {
-                    imageView.setImageResource(R.drawable.logo_google_cloud)
-                }
+                Glide.with(itemView.context)
+                        .load(topProduct.imageUrl)
+                        .centerCrop()
+                        .error(R.drawable.logo_google_cloud)
+                        .into(imageView)
                 titleView.text = topProduct.title
                 subtitleView.text = itemView
                         .resources
@@ -97,6 +91,4 @@ class PreviewCardAdapter(
             }
         }
     }
-
-
 }

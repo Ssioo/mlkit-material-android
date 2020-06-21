@@ -27,14 +27,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.google.common.collect.ImmutableList
 import com.google.firebase.ml.md.databinding.ActivityStaticObjectKotlinBinding
 import com.google.firebase.ml.md.models.Product
@@ -52,16 +49,11 @@ import java.io.IOException
 import java.util.*
 
 /** Demonstrates the object detection and visual search workflow using static image.  */
-class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener {
+class StaticObjectDetectionActivity : AppCompatActivity() {
 
     private val searchedObjectMap = TreeMap<Int, SearchedObject>()
 
     private lateinit var binding: ActivityStaticObjectKotlinBinding
-
-    private var bottomPromptChip: Chip? = null
-    private var inputImageView: ImageView? = null
-    private var previewCardCarousel: RecyclerView? = null
-    private var dotViewContainer: ViewGroup? = null
 
     private var inputBitmap: Bitmap? = null
     private var dotViewSize: Int = 0
@@ -73,26 +65,15 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         searchEngine = SearchEngine(applicationContext)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_static_object_kotlin)
 
-        binding.loadingView.setOnClickListener(this)
+        binding.cardRecyclerView.setHasFixedSize(true)
 
-        bottomPromptChip = findViewById(R.id.bottom_prompt_chip)
-        inputImageView = findViewById(R.id.input_image_view)
-
-        previewCardCarousel = findViewById<RecyclerView>(R.id.card_recycler_view).apply {
-            setHasFixedSize(true)
-        }
-
-        dotViewContainer = findViewById(R.id.dot_view_container)
         dotViewSize = resources.getDimensionPixelOffset(R.dimen.static_image_dot_view_size)
 
-
-        findViewById<View>(R.id.close_button).setOnClickListener(this)
-        findViewById<View>(R.id.photo_library_button).setOnClickListener(this)
+        binding.closeButton.setOnClickListener { finish() }
+        binding.photoLibraryButton.setOnClickListener { Utils.openImagePicker(this) }
 
         detector = FirebaseVision.getInstance()
                 .getOnDeviceObjectDetector(
@@ -123,23 +104,16 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
         }
     }
 
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.close_button -> onBackPressed()
-            R.id.photo_library_button -> Utils.openImagePicker(this)
-        }
-    }
-
 
     private fun detectObjects(imageUri: Uri) {
-        inputImageView?.setImageDrawable(null)
-        bottomPromptChip?.visibility = View.GONE
-        previewCardCarousel?.adapter = PreviewCardAdapter(ImmutableList.of()) {
+        binding.inputImageView.setImageDrawable(null)
+        binding.bottomPromptChip.visibility = View.GONE
+        binding.cardRecyclerView.adapter = PreviewCardAdapter(ImmutableList.of()) {
             //아이템 터치 이벤트
 
         }
-        previewCardCarousel?.clearOnScrollListeners()
-        dotViewContainer?.removeAllViews()
+        binding.cardRecyclerView.clearOnScrollListeners()
+        binding.dotViewContainer.removeAllViews()
         currentSelectedObjectIndex = 0
 
         try {
@@ -150,7 +124,7 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
             return
         }
 
-        inputImageView?.setImageBitmap(inputBitmap)
+        binding.inputImageView.setImageBitmap(inputBitmap)
         binding.loadingView.visibility = View.VISIBLE
         val image = FirebaseVisionImage.fromBitmap(inputBitmap!!)
         detector?.processImage(image)
@@ -185,13 +159,12 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
 
         showBottomPromptChip(getString(R.string.static_image_prompt_detected_results))
         binding.loadingView.visibility = View.GONE
-        previewCardCarousel?.adapter = PreviewCardAdapter(ImmutableList.copyOf(searchedObjectMap.values)) {
+        binding.cardRecyclerView.adapter = PreviewCardAdapter(ImmutableList.copyOf(searchedObjectMap.values)) {
             // 요부분 아이템 클릭 리스너
             // 음악재생해야함.
 
         }
-        previewCardCarousel?.addOnScrollListener(
-                object : RecyclerView.OnScrollListener() {
+        binding.cardRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         Log.d(TAG, "New card scroll state: $newState")
                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -218,11 +191,11 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
                 } else {
                     selectNewObject(searchedObject.objectIndex)
                     //showSearchResults(searchedObject)
-                    previewCardCarousel!!.smoothScrollToPosition(searchedObject.objectIndex)
+                    binding.cardRecyclerView.smoothScrollToPosition(searchedObject.objectIndex)
                 }
             }
 
-            dotViewContainer?.addView(dotView)
+            binding.dotViewContainer.addView(dotView)
             val animatorSet = AnimatorInflater.loadAnimator(this, R.animator.static_image_dot_enter) as AnimatorSet
             animatorSet.setTarget(dotView)
             animatorSet.start()
@@ -233,18 +206,17 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
         val viewCoordinateScale: Float
         val horizontalGap: Float
         val verticalGap: Float
-        val inputImageView = inputImageView ?: throw NullPointerException()
         val inputBitmap = inputBitmap ?: throw NullPointerException()
-        val inputImageViewRatio = inputImageView.width.toFloat() / inputImageView.height
+        val inputImageViewRatio = binding.inputImageView.width.toFloat() / binding.inputImageView.height
         val inputBitmapRatio = inputBitmap.width.toFloat() / inputBitmap.height
         if (inputBitmapRatio <= inputImageViewRatio) { // Image content fills height
-            viewCoordinateScale = inputImageView.height.toFloat() / inputBitmap.height
-            horizontalGap = (inputImageView.width - inputBitmap.width * viewCoordinateScale) / 2
+            viewCoordinateScale = binding.inputImageView.height.toFloat() / inputBitmap.height
+            horizontalGap = (binding.inputImageView.width - inputBitmap.width * viewCoordinateScale) / 2
             verticalGap = 0f
         } else { // Image content fills width
-            viewCoordinateScale = inputImageView.width.toFloat() / inputBitmap.width
+            viewCoordinateScale = binding.inputImageView.width.toFloat() / inputBitmap.width
             horizontalGap = 0f
-            verticalGap = (inputImageView.height - inputBitmap.height * viewCoordinateScale) / 2
+            verticalGap = (binding.inputImageView.height - inputBitmap.height * viewCoordinateScale) / 2
         }
 
         val boundingBox = searchedObject.boundingBox
@@ -271,18 +243,18 @@ class StaticObjectDetectionActivity : AppCompatActivity(), View.OnClickListener 
     }
 
     private fun selectNewObject(objectIndex: Int) {
-        val dotViewToDeselect = dotViewContainer!!.getChildAt(currentSelectedObjectIndex) as StaticObjectDotView
+        val dotViewToDeselect = binding.dotViewContainer.getChildAt(currentSelectedObjectIndex) as StaticObjectDotView
         dotViewToDeselect.playAnimationWithSelectedState(false)
 
         currentSelectedObjectIndex = objectIndex
 
-        val selectedDotView = dotViewContainer!!.getChildAt(currentSelectedObjectIndex) as StaticObjectDotView
+        val selectedDotView = binding.dotViewContainer.getChildAt(currentSelectedObjectIndex) as StaticObjectDotView
         selectedDotView.playAnimationWithSelectedState(true)
     }
 
     private fun showBottomPromptChip(message: String) {
-        bottomPromptChip?.visibility = View.VISIBLE
-        bottomPromptChip?.text = message
+        binding.bottomPromptChip.visibility = View.VISIBLE
+        binding.bottomPromptChip.text = message
     }
 
     companion object {

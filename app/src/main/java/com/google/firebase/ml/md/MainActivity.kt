@@ -25,7 +25,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /** Entry activity to select the detection mode.  */
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<RecyclerView>(R.id.mode_recycler_view).apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = ModeItemAdapter(DetectionMode.values())
         }
     }
@@ -53,6 +51,9 @@ class MainActivity : AppCompatActivity() {
             Utils.requestRuntimePermissions(this)
         }
     }
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Utils.REQUEST_CODE_PHOTO_LIBRARY &&
@@ -69,13 +70,8 @@ class MainActivity : AppCompatActivity() {
     private inner class ModeItemAdapter internal constructor(private val detectionModes: Array<DetectionMode>) :
         RecyclerView.Adapter<ModeItemAdapter.ModeItemViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModeItemViewHolder {
-            return ModeItemViewHolder(
-                    LayoutInflater.from(parent.context)
-                            .inflate(R.layout.detection_mode_item, parent, false
-                            )
-            )
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModeItemViewHolder
+                = ModeItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.detection_mode_item, parent, false))
 
         override fun onBindViewHolder(modeItemViewHolder: ModeItemViewHolder, position: Int) =
             modeItemViewHolder.bindDetectionMode(detectionModes[position])

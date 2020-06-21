@@ -35,10 +35,11 @@ class SearchEngine(context: Context) {
     private val searchRequestQueue: RequestQueue = Volley.newRequestQueue(context)
     private val requestCreationExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
-    fun search(
-        detectedObject: DetectedObject,
-        listener: (detectedObject: DetectedObject, productList: List<Product>) -> Unit
-    ) {
+    fun loadItem(no: Int) {
+
+    }
+
+    fun search(detectedObject: DetectedObject, listener: (detectedObject: DetectedObject, productList: List<Product>) -> Unit) {
         // Crops the object image out of the full image is expensive, so do it off the UI thread.
         Tasks.call(requestCreationExecutor, Callable { createRequest(detectedObject) })
                 .addOnSuccessListener { productRequest -> searchRequestQueue.add(productRequest.setTag(TAG)) }
@@ -47,8 +48,7 @@ class SearchEngine(context: Context) {
                     // Remove the below dummy code after your own product search backed hooked up.
                     val productList = ArrayList<Product>()
                     for (i in 0..7) {
-                        productList.add(
-                                Product(/* imageUrl= */"", "Product title $i", "Product subtitle $i"))
+                        productList.add(Product("", "Product title $i", "Product subtitle $i"))
                     }
                     listener.invoke(detectedObject, productList)
                 }
